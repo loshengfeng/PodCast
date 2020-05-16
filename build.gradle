@@ -5,6 +5,7 @@ buildscript {
     ext.koin_version = '2.1.5'
 
     repositories {
+        //TODO  add yourself  maven server ( use nexus )
         google()
         jcenter()
         mavenCentral()

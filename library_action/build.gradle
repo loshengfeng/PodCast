@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+//TODO  try let as aar & upload to  maven server ( use nexus )
 
 android {
     compileSdkVersion 29
