@@ -4,7 +4,6 @@ import android.app.Service
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.IBinder
-import arvin.podcast.activity.PodCastPlayerActivity
 import arvin.podcast.utils.Action.Companion.ACTION_FORWARD
 import arvin.podcast.utils.Action.Companion.ACTION_INIT
 import arvin.podcast.utils.Action.Companion.ACTION_PAUSE
@@ -12,6 +11,9 @@ import arvin.podcast.utils.Action.Companion.ACTION_PLAY
 import arvin.podcast.utils.Action.Companion.ACTION_RELEASE
 import arvin.podcast.utils.Action.Companion.ACTION_REVERSE
 import arvin.podcast.utils.Action.Companion.ACTION_UPDATE
+import arvin.podcast.utils.Data.Companion.INTENT_CURRENT_TIME
+import arvin.podcast.utils.Data.Companion.INTENT_TOTAL_TIME
+import arvin.podcast.utils.Data.Companion.INTENT_URL
 import kotlinx.coroutines.*
 
 class MediaPlayService : Service() {
@@ -27,7 +29,7 @@ class MediaPlayService : Service() {
     override fun onCreate() {
         super.onCreate()
         mediaPlayer.setOnPreparedListener {
-            updateUIIntent.putExtra(PodCastPlayerActivity.INTENT_TOTAL_TIME, it.duration)
+            updateUIIntent.putExtra(INTENT_TOTAL_TIME, it.duration)
             updateUI(ACTION_UPDATE)
         }
     }
@@ -36,7 +38,7 @@ class MediaPlayService : Service() {
         when (intent?.action) {
             ACTION_INIT -> {
                 mediaPlayer.apply {
-                    val url = intent.getStringExtra(PodCastPlayerActivity.INTENT_URL)
+                    val url = intent.getStringExtra(INTENT_URL)
                     setDataSource(url)
                     prepareAsync()
                 }
@@ -50,7 +52,7 @@ class MediaPlayService : Service() {
                     while (true) {
                         delay(500)
                         updateUIIntent.putExtra(
-                            PodCastPlayerActivity.INTENT_CURRENT_TIME,
+                            INTENT_CURRENT_TIME,
                             mediaPlayer.currentPosition
                         )
                         updateUI(ACTION_UPDATE)

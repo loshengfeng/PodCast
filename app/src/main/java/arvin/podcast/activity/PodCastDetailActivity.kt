@@ -7,11 +7,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import arvin.podcast.R
-import arvin.podcast.activity.PodCastPlayerActivity.Companion.INTENT_DATA
-import arvin.podcast.activity.PodCastPlayerActivity.Companion.INTENT_POD_CAST_COVER
 import arvin.podcast.adapter.PodCastDetailAdapter
 import arvin.podcast.api.data.Collection
 import arvin.podcast.api.data.ContentFeed
+import arvin.podcast.utils.Data.Companion.INTENT_DATA
+import arvin.podcast.utils.Data.Companion.INTENT_POD_CAST_COVER
 import arvin.podcast.viewmodel.PodCastDetailViewModel
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_pod_cast_detail.*

@@ -17,28 +17,21 @@ import arvin.podcast.utils.Action.Companion.ACTION_PLAY
 import arvin.podcast.utils.Action.Companion.ACTION_RELEASE
 import arvin.podcast.utils.Action.Companion.ACTION_REVERSE
 import arvin.podcast.utils.Action.Companion.ACTION_UPDATE
+import arvin.podcast.utils.Data.Companion.INTENT_CURRENT_TIME
+import arvin.podcast.utils.Data.Companion.INTENT_DATA
+import arvin.podcast.utils.Data.Companion.INTENT_POD_CAST_COVER
+import arvin.podcast.utils.Data.Companion.INTENT_TOTAL_TIME
+import arvin.podcast.utils.Data.Companion.INTENT_URL
 import arvin.podcast.utils.MediaPlayService
 import arvin.podcast.utils.TimeUtils
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_pod_cast_player.*
 
 class PodCastPlayerActivity : AppCompatActivity() {
-
     private var mediaSource = String()
     private var intentService: Intent? = null
     private var isPlaying = false
     private var isPrepare = false
-
-    companion object {
-        const val INTENT_DATA = "intent_data"
-        const val INTENT_POD_CAST_COVER = "intent_pod_cast_cover"
-
-        const val INTENT_URL = "intent_url"
-        const val INTENT_CURRENT_TIME: String = "intent_current_time"
-        const val INTENT_TOTAL_TIME: String = "intent_total_time"
-
-
-    }
 
     private val receiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
