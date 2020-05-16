@@ -20,13 +20,12 @@ class PodCastActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         initView()
-        viewModel.getPodCastList()
         viewModel.podCastsLiveData.observe(this, Observer {
             podCastListAdapter.data = it.podcast
             podCastListAdapter.notifyDataSetChanged()
         })
+        viewModel.getPodCastList()
 
         podCastListAdapter.setUpListener(object : PodCastListAdapter.OnClickListener {
             override fun onClick() {

@@ -53,4 +53,6 @@ dependencies {
 
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    //TODO  try use yourself  maven server  like : implementation 'arvin.podcast.library:library_action:0.0.1'
+    implementation project(path: ':library_action')
 }

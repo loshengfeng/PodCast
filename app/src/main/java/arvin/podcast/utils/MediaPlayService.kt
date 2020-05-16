@@ -4,7 +4,16 @@ import android.app.Service
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.IBinder
-import arvin.podcast.activity.PodCastPlayerActivity
+import arvin.podcast.utils.Action.Companion.ACTION_FORWARD
+import arvin.podcast.utils.Action.Companion.ACTION_INIT
+import arvin.podcast.utils.Action.Companion.ACTION_PAUSE
+import arvin.podcast.utils.Action.Companion.ACTION_PLAY
+import arvin.podcast.utils.Action.Companion.ACTION_RELEASE
+import arvin.podcast.utils.Action.Companion.ACTION_REVERSE
+import arvin.podcast.utils.Action.Companion.ACTION_UPDATE
+import arvin.podcast.utils.Data.Companion.INTENT_CURRENT_TIME
+import arvin.podcast.utils.Data.Companion.INTENT_TOTAL_TIME
+import arvin.podcast.utils.Data.Companion.INTENT_URL
 import kotlinx.coroutines.*
 
 class MediaPlayService : Service() {
@@ -20,46 +29,49 @@ class MediaPlayService : Service() {
     override fun onCreate() {
         super.onCreate()
         mediaPlayer.setOnPreparedListener {
-            updateUIIntent.putExtra(PodCastPlayerActivity.INTENT_TOTAL_TIME, it.duration)
-            updateUI(PodCastPlayerActivity.ACTION_UPDATE)
+            updateUIIntent.putExtra(INTENT_TOTAL_TIME, it.duration)
+            updateUI(ACTION_UPDATE)
         }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        when(intent?.action) {
-            PodCastPlayerActivity.ACTION_INIT -> {
+        when (intent?.action) {
+            ACTION_INIT -> {
                 mediaPlayer.apply {
-                    val url = intent.getStringExtra(PodCastPlayerActivity.INTENT_URL)
+                    val url = intent.getStringExtra(INTENT_URL)
                     setDataSource(url)
                     prepareAsync()
                 }
             }
-            PodCastPlayerActivity.ACTION_PLAY -> {
+            ACTION_PLAY -> {
                 mediaPlayer.seekTo(current)
                 mediaPlayer.start()
-                updateUI(PodCastPlayerActivity.ACTION_PLAY)
+                updateUI(ACTION_PLAY)
 
                 job = CoroutineScope(Dispatchers.IO).launch {
                     while (true) {
                         delay(500)
-                        updateUIIntent.putExtra(PodCastPlayerActivity.INTENT_CURRENT_TIME, mediaPlayer.currentPosition)
-                        updateUI(PodCastPlayerActivity.ACTION_UPDATE)
+                        updateUIIntent.putExtra(
+                            INTENT_CURRENT_TIME,
+                            mediaPlayer.currentPosition
+                        )
+                        updateUI(ACTION_UPDATE)
                     }
                 }
             }
-            PodCastPlayerActivity.ACTION_PAUSE -> {
+            ACTION_PAUSE -> {
                 mediaPlayer.pause()
                 current = mediaPlayer.currentPosition
-                updateUI(PodCastPlayerActivity.ACTION_PAUSE)
+                updateUI(ACTION_PAUSE)
                 job.cancel()
             }
-            PodCastPlayerActivity.ACTION_FORWARD -> {
+            ACTION_FORWARD -> {
                 mediaPlayer.seekTo(mediaPlayer.currentPosition + 30000)
             }
-            PodCastPlayerActivity.ACTION_REVERSE -> {
+            ACTION_REVERSE -> {
                 mediaPlayer.seekTo(mediaPlayer.currentPosition - 30000)
             }
-            PodCastPlayerActivity.ACTION_RELEASE -> {
+            ACTION_RELEASE -> {
                 mediaPlayer.release()
                 job.cancel()
             }
